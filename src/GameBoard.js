@@ -1,12 +1,16 @@
-const GameBoard = {
+class GameBoard {
     
-    state: [],
-    gameBoardTable: document.getElementById('gameboard'),
-    boardSizeX: 12,
-    boardSizeY: 18,
-    currentBlock: undefined,
+    state = [];
+    gameBoardTable = document.getElementById('gameboard');
+    boardSizeX;
+    boardSizeY;
+    currentBlock;
 
-    init() {
+    constructor ( boardSizeX, boardSizeY ) {
+
+        this.boardSizeX = boardSizeX;
+        this.boardSizeY = boardSizeY;
+
         for ( let y = 0; y < this.boardSizeY; y++ ) {
             let arr = [];
             for ( let x = 0; x < this.boardSizeX; x++ ) {
@@ -33,7 +37,7 @@ const GameBoard = {
                     break;
             }
         });
-    },
+    }
 
     draw() {
 
@@ -51,18 +55,40 @@ const GameBoard = {
                     boardCellTd.classList.add(this.currentBlock.class);
                 }
 
+                // draw colors
+
+                if ( this.state[y][x] != '' ) {
+                    boardCellTd.classList.add(this.state[y][x]);
+                }
+
+
                 boardRowTr.append(boardCellTd);
             }
             this.gameBoardTable.append(boardRowTr);
         }
     
         // scoreDiv.innerText = 'Score: ' + score;
-    },
+    }
+
+    getState () {
+        return this.state;
+    }
 
     addNewBlock( block ) {
         this.currentBlock = block;
-    },
+    }
 
+    addBlockToState ( block ) {
+
+        const coordinates = block.getCoordinates();
+        coordinates.forEach( el => {
+            this.state[el[1]][el[0]] = block.class;
+        });
+
+        console.log(this.state);
+
+
+    }
 }
 
 export { GameBoard }

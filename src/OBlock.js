@@ -1,7 +1,15 @@
 class OBlock {
 
+    boardSizeX;
+    boardSizeY;
+
+    width = 2;
+    height = 2;
+
     positionX;
     positionY = -2;
+
+    isStopped = false;
 
     class = 'o-block';
 
@@ -13,8 +21,12 @@ class OBlock {
     ];
 
 
-    constructor ( x ) {
-        this.positionX = x;
+    constructor ( boardSizeX, boardSizeY ) {
+        this.boardSizeX = boardSizeX;
+        this.boardSizeY = boardSizeY;
+    
+        
+        this.positionX = Math.floor(this.boardSizeX / 2) - 1;
     }
 
     isOverlapingCell ( id ) {
@@ -29,16 +41,44 @@ class OBlock {
         return res;
     }
 
+    getCoordinates () {
+        return this.shape.map( x => {
+            return [x[0] + this.positionX, x[1] + this.positionY];
+        });
+    }
+
+    canGoDown ( state ) {
+        if ( (this.positionY + this.height) < this.boardSizeY ) {
+            return true;
+        }
+        return false;
+        // if ( state[] ) {
+
+        // }
+    }
+
+    getIsStopped () {
+        return this.isStopped;
+    }
+
+    stop () {
+        this.isStopped = true;
+    }
+
     moveDown () {
         this.positionY++;
     }
 
     moveLeft () {
-        this.positionX--;
+        if ( this.positionX > 0 ) {
+            this.positionX--;
+        }
     }
 
     moveRight () {
-        this.positionX++;
+        if ( this.positionX < (this.boardSizeX - this.width) ) {
+            this.positionX++;
+        }
     }
 
 }

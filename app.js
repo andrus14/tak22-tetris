@@ -7,6 +7,9 @@ import { OBlock } from "./src/OBlock.js";
 
 let timeoutID, speed;
 
+const boardSizeX = 14;
+const boardSizeY = 16;
+
 function initGame () {
 
     clearTimeout(timeoutID);
@@ -18,16 +21,22 @@ function initGame () {
     // messageDiv.innerText = '';
     // messageDiv.classList.add('hidden');
 
-    GameBoard.init();
-
-    const oBlock = new OBlock(Math.floor(GameBoard.boardSizeX / 2) - 1);
-    GameBoard.addNewBlock(oBlock);
-    GameBoard.draw();
+    const gameBoard = new GameBoard(boardSizeX, boardSizeY);
+    const oBlock = new OBlock(boardSizeX, boardSizeY);
+    gameBoard.addNewBlock(oBlock);
+    gameBoard.draw();
 
     (function repeat() {
         timeoutID = setTimeout(repeat, speed);
-        oBlock.moveDown();
-        GameBoard.draw();
+        if ( oBlock.canGoDown(gameBoard.getState()) ) {
+            oBlock.moveDown();
+        } else {
+            if ( !oBlock.getIsStopped() ) {
+                gameBoard.addBlockToState(oBlock);
+                oBlock.stop();
+            }
+        }
+        gameBoard.draw();
     })();
 
     // addFood();
