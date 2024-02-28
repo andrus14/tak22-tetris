@@ -1,5 +1,4 @@
 import { GameBoard } from "./src/GameBoard.js";
-import { OBlock } from "./src/OBlock.js";
 
 // const messageDiv = document.getElementById('message');
 // const scoreDiv = document.getElementById('score');

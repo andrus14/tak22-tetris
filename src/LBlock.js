@@ -1,26 +1,23 @@
-class OBlock {
+class LBlock {
 
     boardSizeX;
     boardSizeY;
 
     positionX;
-    positionY = -2;
+    positionY = -3;
 
     isStopped = false;
 
-    class = 'o-block';
+    class = 'l-block';
 
     pose = 0
 
     shape = [
-        [
-            [0, 0],
-            [0, 1],
-            [1, 0],
-            [1, 1],
-        ]
+        [[0, 0], [1, 0], [2, 0], [2, 1]],
+        [[0, 2], [1, 0], [1, 1], [1, 2]],
+        [[0, 0], [0, 1], [1, 1], [2, 1]],
+        [[0, 0], [0, 1], [0, 2], [1, 0]],
     ];
-
 
     constructor ( boardSizeX, boardSizeY ) {
         this.boardSizeX = boardSizeX;
@@ -33,7 +30,7 @@ class OBlock {
     isOverlapingCell ( id ) {
         let res = false;
 
-        this.shape.forEach( el => {
+        this.shape[this.pose].forEach( el => {
             if ( id == (el[0] + this.positionY) + '_' + (el[1] + this.positionX) ) {
                 res = true;
             }
@@ -43,7 +40,7 @@ class OBlock {
     }
 
     getCoordinates () {
-        return this.shape.map( cell => {
+        return this.shape[this.pose].map( cell => {
             return [cell[0] + this.positionY, cell[1] + this.positionX];
         });
     }
@@ -52,14 +49,16 @@ class OBlock {
 
         let res = true;
 
-        if ( (this.positionY + this.height) >= this.boardSizeY ) {
+        if ( (this.positionY + this.calculateHeight()) >= this.boardSizeY ) {
             return false;
         }
 
         const coordinates = this.getCoordinates();
         coordinates.forEach( el => {
-            if ( el[0] > -2 ) {
-                if ( state[el[0] + 1][el[1]] != '' ) {
+            const newY = el[0]+1;
+            const newX = el[1];
+            if ( newY >= 0 && newY < this.boardSizeY ) {
+                if ( state[newY][newX] != '' ) {
                     res = false;
                     return false;
                 }
@@ -98,7 +97,7 @@ class OBlock {
 
         let res = true;
 
-        if ( this.positionX >= (this.boardSizeX - this.width) ) {
+        if ( this.positionX >= (this.boardSizeX - this.calculateWidth()) ) {
             return false;
         }
 
@@ -118,6 +117,28 @@ class OBlock {
 
     }
 
+    calculateHeight () {
+        const currentShape = this.shape[this.pose];
+        let height = 0;
+
+        currentShape.forEach( el => {
+            height = Math.max(height, el[0]);
+        });
+
+        return height + 1;
+    }
+
+    calculateWidth () {
+        const currentShape = this.shape[this.pose];
+        let width = 0;
+
+        currentShape.forEach( el => {
+            width = Math.max(width, el[0]);
+        });
+
+        return width;
+    }
+
     getIsStopped () {
         return this.isStopped;
     }
@@ -131,17 +152,17 @@ class OBlock {
     }
 
     moveLeft () {
-        if ( this.positionX > 0 ) {
-            this.positionX--;
-        }
+        this.positionX--;
     }
 
     moveRight () {
-        if ( this.positionX < (this.boardSizeX - this.width) ) {
-            this.positionX++;
-        }
+        this.positionX++;
+    }
+
+    nextPose () {
+        this.pose = (this.pose + 1) % this.shape.length;
     }
 
 }
 
-export { OBlock }
+export { LBlock }

@@ -1,4 +1,5 @@
 import { OBlock } from "./OBlock.js";
+import { LBlock } from "./LBlock.js";
 
 class GameBoard {
     
@@ -23,9 +24,10 @@ class GameBoard {
 
         document.addEventListener ('keydown', e => {
             switch ( e.key ) {
-                // case 'ArrowUp':
-                //     direction = 'u';
-                //     break;
+                case 'ArrowUp':
+                    this.currentBlock.nextPose();
+                    this.draw();
+                    break;
                 // case 'ArrowDown':
                 //     direction = 'd';
                 //     break;
@@ -85,7 +87,7 @@ class GameBoard {
     }
 
     addNewBlock() {
-        this.currentBlock = new OBlock(this.boardSizeX, this.boardSizeY);
+        this.currentBlock = new LBlock(this.boardSizeX, this.boardSizeY);
     }
 
     addBlockToState ( block ) {
