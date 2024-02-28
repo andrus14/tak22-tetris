@@ -1,3 +1,5 @@
+import { OBlock } from "./OBlock.js";
+
 class GameBoard {
     
     state = [];
@@ -28,12 +30,16 @@ class GameBoard {
                 //     direction = 'd';
                 //     break;
                 case 'ArrowLeft':
-                    this.currentBlock.moveLeft();
-                    this.draw();
+                    if ( this.currentBlock.canGoLeft(this.state) ) {
+                        this.currentBlock.moveLeft();
+                        this.draw();
+                    }
                     break;
                 case 'ArrowRight':
-                    this.currentBlock.moveRight();
-                    this.draw();
+                    if ( this.currentBlock.canGoRight(this.state) ) {
+                        this.currentBlock.moveRight();
+                        this.draw();
+                    }
                     break;
             }
         });
@@ -74,19 +80,20 @@ class GameBoard {
         return this.state;
     }
 
-    addNewBlock( block ) {
-        this.currentBlock = block;
+    getCurrentBlock () {
+        return this.currentBlock;
+    }
+
+    addNewBlock() {
+        this.currentBlock = new OBlock(this.boardSizeX, this.boardSizeY);
     }
 
     addBlockToState ( block ) {
 
         const coordinates = block.getCoordinates();
         coordinates.forEach( el => {
-            this.state[el[1]][el[0]] = block.class;
+            this.state[el[0]][el[1]] = block.class;
         });
-
-        console.log(this.state);
-
 
     }
 }

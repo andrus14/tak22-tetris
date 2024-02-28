@@ -42,19 +42,79 @@ class OBlock {
     }
 
     getCoordinates () {
-        return this.shape.map( x => {
-            return [x[0] + this.positionX, x[1] + this.positionY];
+        return this.shape.map( cell => {
+            return [cell[0] + this.positionY, cell[1] + this.positionX];
         });
     }
 
     canGoDown ( state ) {
-        if ( (this.positionY + this.height) < this.boardSizeY ) {
-            return true;
-        }
-        return false;
-        // if ( state[] ) {
 
-        // }
+        let res = true;
+
+        if ( (this.positionY + this.height) >= this.boardSizeY ) {
+            return false;
+        }
+
+        const coordinates = this.getCoordinates();
+        coordinates.forEach( el => {
+            if ( el[0] > -2 ) {
+                if ( state[el[0] + 1][el[1]] != '' ) {
+                    res = false;
+                    return false;
+                }
+            }
+        });
+
+        return res;
+
+    }
+
+    canGoLeft ( state ) {
+
+        let res = true;
+
+        if ( this.positionX <= 0 ) {
+            return false;
+        }
+
+        const coordinates = this.getCoordinates();
+        coordinates.forEach( el => {
+            const newY = el[0];
+            const newX = el[1]-1;
+            if ( newY >= 0 && newX >= 0 && newY < this.boardSizeY && newX < this.boardSizeX ) {
+                if ( state[newY][newX] != '' ) {
+                    res = false;
+                    return false;
+                }
+            }
+        });
+
+        return res;
+
+    }
+
+    canGoRight ( state ) {
+
+        let res = true;
+
+        if ( this.positionX >= (this.boardSizeX - this.width) ) {
+            return false;
+        }
+
+        const coordinates = this.getCoordinates();
+        coordinates.forEach( el => {
+            const newY = el[0];
+            const newX = el[1]+1;
+            if ( newY >= 0 && newX >= 0 && newY < this.boardSizeY && newX < this.boardSizeX ) {
+                if ( state[newY][newX] != '' ) {
+                    res = false;
+                    return false;
+                }
+            }
+        });
+
+        return res;
+
     }
 
     getIsStopped () {
