@@ -33,6 +33,7 @@ function initGame () {
             if ( !currentBlock.getIsStopped() ) {
                 gameBoard.addBlockToState(currentBlock);
                 currentBlock.stop();
+                gameBoard.checkRows();
                 gameBoard.addNewBlock();
             }
         }

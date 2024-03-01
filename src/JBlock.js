@@ -1,15 +1,15 @@
 import { Block } from "./Block.js";
 
 
-class LBlock extends Block{
+class JBlock extends Block{
 
-    class = 'l-block';
+    class = 'j-block';
 
     shape = [
-        [[0, 0], [1, 0], [2, 0], [2, 1]],
+        [[0, 1], [1, 1], [2, 0], [2, 1]],
+        [[0, 0], [0, 1], [0, 2], [1, 2]],
+        [[0, 0], [0, 1], [1, 0], [2, 0]],
         [[0, 2], [1, 0], [1, 1], [1, 2]],
-        [[0, 0], [0, 1], [1, 1], [2, 1]],
-        [[0, 0], [0, 1], [0, 2], [1, 0]],
     ];
 
     constructor ( boardSizeX, boardSizeY ) {
@@ -20,4 +20,4 @@ class LBlock extends Block{
 
 }
 
-export { LBlock }
+export { JBlock }
