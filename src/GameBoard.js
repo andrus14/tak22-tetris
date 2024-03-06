@@ -94,9 +94,6 @@ class GameBoard {
 
     addNextBlock () {
         
-        const i = Math.floor(Math.random() * 7);
-        this.currentBlock = new this.allBlocks[i](this.boardSizeX, this.boardSizeY);
-
         this.nextBoardTable.innerHTML = '';
 
         const width = this.nextBlock.calculateWidth();
